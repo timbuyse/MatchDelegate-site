@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MatchDelegate — de wedstrijd zelf opvolgen</title>
+<meta name="description" content="MatchDelegate is een app waarmee de afgevaardigde of trainer de jeugdwedstrijd live opvolgt: opstelling, wissels en speeltijd, kwart per kwart. Na de match staat het verslag klaar.">
+<link rel="icon" href="img/favicon.png">
+<meta name="theme-color" content="#0f172a">
+<meta property="og:title" content="MatchDelegate — de wedstrijd zelf opvolgen">
+<meta property="og:description" content="Opstelling, wissels en speeltijd, kwart per kwart. Na de match staat het verslag klaar.">
+<meta property="og:image" content="img/logo.png">
+<meta property="og:type" content="website">
+<style>
+  /* Kleuren, letters en vormen komen uit de app zelf, zodat site en app één geheel zijn. */
+  :root {
+    --blk: #0f172a;
+    --blk2: #1e293b;
+    --grn: #2f9e57;
+    --grn2: #247d44;
+    --grnp: #dcf1e3;
+    --grnb: #aedcbd;
+    --blu: #2f74bd;
+    --blup: #e1edf8;
+    --bg: #f5f6f5;
+    --card: #fff;
+    --txt: #171717;
+    --txt2: #6b7280;
+    --bdr: #e5e7eb;
+    --shadow: 0 2px 8px rgba(0, 0, 0, .1);
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--txt);
+    line-height: 1.55;
+    font-size: 16px;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--grn); outline-offset: 2px; }
+
+  .content {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  /* ---------- kop, zoals de header van de app ---------- */
+
+  .hdr {
+    background: url('img/background_logo.jpg') center/cover no-repeat;
+    position: relative;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+  }
+  .hdr::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 18, 35, .62);
+  }
+  .hdr-inner {
+    position: relative;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 18px 16px 44px;
+  }
+
+  .hdr-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .hdr-btn {
+    background: var(--blu);
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 8px;
+  }
+
+  /* ---------- de opstart van de app, hier als onthaal ---------- */
+
+  .boot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 26px 0 10px;
+    text-align: center;
+  }
+  .boot img {
+    width: 116px;
+    height: 116px;
+    object-fit: contain;
+    opacity: 0;
+    animation: bootLogo .6s ease forwards;
+  }
+  .boot-bar {
+    width: 150px;
+    height: 3px;
+    background: var(--grn);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: center;
+    animation: bootBar 1s .4s cubic-bezier(.22, 1, .36, 1) forwards;
+  }
+  .boot-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    opacity: 0;
+    animation: bootFade .5s .7s ease forwards;
+  }
+  .boot-title {
+    font-size: clamp(22px, 6vw, 28px);
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .boot-name {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, .55);
+  }
+
+  .hdr-lead {
+    opacity: 0;
+    animation: bootFade .6s 1.15s ease forwards;
+    padding-top: 18px;
+  }
+  .hdr-lead h1 {
+    font-size: clamp(25px, 6.4vw, 34px);
+    font-weight: 800;
+    line-height: 1.18;
+    letter-spacing: -.02em;
+    text-wrap: balance;
+  }
+  .hdr-lead p {
+    margin-top: 12px;
+    font-size: 16.5px;
+    color: rgba(255, 255, 255, .82);
+  }
+
+  @keyframes bootLogo { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes bootBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes bootFade { from { opacity: 0; } to { opacity: 1; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .boot img, .boot-titles, .hdr-lead { opacity: 1; animation: none; }
+    .boot-bar { transform: none; animation: none; }
+  }
+
+  /* ---------- kaarten, zoals in de app ---------- */
+
+  section { padding: 26px 0 4px; }
+
+  .label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--txt2);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-bottom: 9px;
+  }
+
+  h2 {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    margin-bottom: 12px;
+    text-wrap: balance;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .card h3 {
+    font-size: 16.5px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  .card p { font-size: 15px; color: var(--txt); }
+  .card p + p { margin-top: 9px; }
+  .card .muted { color: var(--txt2); font-size: 14.5px; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(252px, 1fr));
+    gap: 12px;
+  }
+  .cards .card { margin-bottom: 0; }
+
+  /* uitgelicht: tekst met het bijhorende scherm ernaast */
+  .hl {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .hl-txt { flex: 1 1 auto; min-width: 0; }
+  .hl img {
+    flex: 0 0 auto;
+    width: 168px;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+  }
+  @media (max-width: 520px) {
+    .hl { flex-direction: column; }
+    .hl img { width: 100%; max-width: 260px; align-self: center; }
+  }
+
+  /* rollen, als een lijst in de app */
+  .rows .row {
+    display: flex;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--bdr);
+  }
+  .rows .row:last-child { border-bottom: 0; padding-bottom: 0; }
+  .rows .row:first-child { padding-top: 0; }
+  .rows .who {
+    flex: 0 0 96px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--grn2);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    padding-top: 3px;
+  }
+  .rows .what { font-size: 15px; }
+
+  /* ---------- schermbeelden ---------- */
+
+  .shots {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 2px 16px 10px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .shots-wrap { max-width: 640px; margin: 0 auto; }
+  figure {
+    flex: 0 0 auto;
+    width: 208px;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    background: var(--card);
+  }
+  figcaption { font-size: 13px; color: var(--txt2); line-height: 1.4; }
+
+  /* ---------- prijs ---------- */
+
+  .price {
+    background: var(--grnp);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .price .amount {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--grn2);
+    letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .price .amount span {
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+  .price ul { margin: 10px 0 0; padding-left: 20px; }
+  .price li { font-size: 15px; margin-bottom: 5px; color: var(--grn2); }
+  .price li:last-child { margin-bottom: 0; }
+
+  /* ---------- oproep ---------- */
+
+  .cta {
+    background: var(--blk);
+    border-radius: 12px;
+    padding: 22px 18px;
+    color: #fff;
+  }
+  .cta h2 { color: #fff; }
+  .cta p { font-size: 15.5px; color: rgba(255, 255, 255, .82); }
+  .cta p + p { margin-top: 10px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 13px 22px;
+    min-height: 50px;
+    border-radius: 10px;
+    background: var(--grn);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity .15s, transform .1s;
+  }
+  .btn:active { transform: scale(.97); opacity: .85; }
+
+  /* ---------- voet ---------- */
+
+  footer {
+    margin-top: 26px;
+    padding: 22px 0 40px;
+    border-top: 1px solid var(--bdr);
+    font-size: 13.5px;
+    color: var(--txt2);
+    text-align: center;
+  }
+  footer p + p { margin-top: 7px; }
+  footer b { color: var(--blk); }
+
+  @media (max-width: 460px) {
+    .rows .row { flex-direction: column; gap: 2px; }
+    .rows .who { flex: none; padding-top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-inner">
+
+    <div class="hdr-bar">
+      <a class="hdr-btn" href="https://timbuyse.github.io/MatchDelegate/">Aanmelden</a>
+    </div>
+
+    <div class="boot">
+      <img src="img/logo-mark.png" alt="MatchDelegate">
+      <div class="boot-bar"></div>
+      <div class="boot-titles">
+        <div class="boot-title">Match Delegate</div>
+        <div class="boot-name">Manage &nbsp;•&nbsp; Track &nbsp;•&nbsp; Share</div>
+      </div>
+    </div>
+
+    <div class="hdr-lead">
+      <h1>De wedstrijd zelf opvolgen, niet achteraf reconstrueren</h1>
+      <p>De app waarmee de afgevaardigde of de trainer aan de zijlijn de jeugdwedstrijd volgt:
+      opstelling, wissels, doelpunten en kaarten, kwart per kwart. Na de match staat het
+      verslag klaar — en per speler de tijd die hij écht op het veld stond.</p>
+    </div>
+
+  </div>
+</header>
+
+<div class="shots-wrap">
+  <div class="shots">
+    <figure>
+      <img src="img/08_opstelling.jpg" alt="Opstellingsscherm met de shirts van de spelers op het veld, per positie geplaatst" loading="lazy">
+      <figcaption>De opstelling per kwart, met de spelers op hun plek op het veld.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/09_live_wedstrijd.jpg" alt="Wedstrijdscherm met de stand, de tijd van het kwart en knoppen voor doelpunt, wissel en positie" loading="lazy">
+      <figcaption>Tijdens de match: de stand, de tijd, en één tik per gebeurtenis.</figcaption>
+    </figure>
+    <figure>
+      <img src="img/14_statistieken.jpg" alt="Statistiekenscherm met topschutters, meeste speelminuten en fair-play met de minste speeltijd" loading="lazy">
+      <figcaption>Over het seizoen: doelpunten, speelminuten en wie het minst speelde.</figcaption>
+    </figure>
+  </div>
+</div>
+
+<div class="content">
+
+  <section>
+    <div class="label">Het probleem</div>
+    <h2>Wat er vandaag mis is</h2>
+    <div class="card">
+      <p>Elke trainer houdt het op zijn eigen manier bij: een schriftje, een blad in de tas,
+      een berichtje na de match. Daardoor valt er niets te vergelijken tussen ploegen, en als
+      een trainer stopt, verdwijnt zijn manier van werken met hem.</p>
+      <p class="muted">En de vraag die elk seizoen terugkomt — speelt mijn zoon wel genoeg? —
+      beantwoordt u vandaag met een gevoel in plaats van met een cijfer.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Wat het doet</div>
+    <h2>Van de kalender tot het verslag</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Live, aan de zijlijn</h3>
+        <p>Doelpunten, wissels, kaarten en positiewissels: één tik, met de juiste speeltijd
+        eronder. Werkt ook als het netwerk op het veld wegvalt.</p>
+      </div>
+      <div class="card">
+        <h3>Kwart per kwart</h3>
+        <p>De opstelling van elk kwart plant u vooraf, met de spelers op hun plek op het veld.
+        Tijdens de match wijkt u ervan af zoals het valt.</p>
+      </div>
+      <div class="card">
+        <h3>De kalender inlezen</h3>
+        <p>De wedstrijdkalender komt binnen uit een agendabestand of uit Excel — ook een
+        export van Foot24. Niemand hoeft nog wedstrijden over te typen.</p>
+      </div>
+      <div class="card">
+        <h3>Ook voor tornooien</h3>
+        <p>Een tornooidag met meerdere korte wedstrijden houdt u in één geheel bij, met een
+        verslag per tornooi.</p>
+      </div>
+    </div>
+
+    <div class="card hl">
+      <div class="hl-txt">
+        <h3>Eerlijke speeltijd, meetbaar</h3>
+        <p>Per speler de effectief gespeelde minuten, over de hele match en het hele seizoen.
+        De bank staat gesorteerd met wie het minst gespeeld heeft bovenaan, zodat u het ziet
+        op het moment dat u de wissel maakt — niet pas achteraf.</p>
+      </div>
+      <img src="img/09b_pauze_opstelling.jpg" alt="Opstellingsscherm met de bank gesorteerd op minst gespeeld, en per speler zijn minuten en aandeel" loading="lazy">
+    </div>
+
+    <div class="card hl">
+      <div class="hl-txt">
+        <h3>Verslag en overzicht</h3>
+        <p>Na de match staat het verslag klaar: de opstelling van elk kwart, de stand per
+        kwart, en elk doelpunt met de minuut en de assist erbij. Te delen als PDF, en per
+        seizoen ook uit te voeren naar Excel.</p>
+      </div>
+      <img src="img/12_wedstrijd_detail_2.jpg" alt="Wedstrijdverslag met de opstelling per kwart en de doelpunten per kwart met minuut en assist" loading="lazy">
+    </div>
+
+    <div class="card hl">
+      <div class="hl-txt">
+        <h3>Ouders kunnen meekijken</h3>
+        <p>Wie thuis blijft, volgt de stand live mee in kijkmodus, zonder iets te kunnen
+        wijzigen en zonder account als het moet. De club bepaalt per ploeg wat meekijkers te
+        zien krijgen.</p>
+      </div>
+      <img src="img/04_homescherm_kijker.jpg" alt="Startscherm in kijkmodus met de lopende wedstrijd, de volgende wedstrijden en de laatste uitslag" loading="lazy">
+    </div>
+  </section>
+
+  <section>
+    <div class="label">In de club</div>
+    <h2>Wie wat doet</h2>
+    <div class="card rows">
+      <div class="row">
+        <div class="who">Afgevaardigde</div>
+        <div class="what">Volgt de wedstrijd op in de app. Dat is het werk waarvoor ze gemaakt
+        is.</div>
+      </div>
+      <div class="row">
+        <div class="who">Trainer</div>
+        <div class="what">Zet de kern klaar, plant de opstelling per kwart, bekijkt achteraf de
+        cijfers van zijn ploeg.</div>
+      </div>
+      <div class="row">
+        <div class="who">TVJO of coördinator</div>
+        <div class="what">Ziet alle ploegen van de club in één overzicht, en beheert zelf wie
+        bij welke ploeg toegang heeft.</div>
+      </div>
+      <div class="row">
+        <div class="who">Ouder</div>
+        <div class="what">Kijkt mee met de wedstrijd en de statistieken van de ploeg, zonder
+        account als het moet.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Wat het kost</div>
+    <div class="price">
+      <div class="amount">45 euro <span>per ploeg, per seizoen</span></div>
+      <ul>
+        <li>Eén factuur voor de club, geen abonnement per trainer.</li>
+        <li>Alle functies inbegrepen, ook het cluboverzicht.</li>
+        <li>Een vast bedrag voor de hele club vanaf tien ploegen.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="cta">
+      <h2>Eerste clubs gezocht</h2>
+      <p>Een half seizoen proefdraaien, kosteloos en zonder verbintenis: drie tot vijf ploegen
+      gebruiken de app tot de kerstperiode, met één iemand van de club die de ploegen beheert.
+      In januari bekijken we samen of het iets opleverde — en pas dan komt de vraag of de club
+      verder wil.</p>
+      <p>Ik kom het één keer ter plaatse uitleggen aan de trainers en afgevaardigden, en ben
+      tijdens de piloot bereikbaar.</p>
+      <a class="btn" href="mailto:buysesorgeloos@gmail.com?subject=MatchDelegate%20-%20piloot">Neem contact op</a>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">Privacy</div>
+    <h2>Over de gegevens van de spelers</h2>
+    <div class="card">
+      <p>Het gaat over kinderen, dus dit staat er zwart op wit. Van een speler houdt de app
+      alleen de naam bij, en optioneel het rugnummer en de positie. <b>Geen geboortedatum,
+      geen adres, geen telefoonnummer, geen foto's en niets medisch</b> — die velden bestaan
+      niet.</p>
+      <p>De gegevens staan in een databank in het datacenter van Google in Saint-Ghislain, dus
+      in België. Ze blijven eigendom van de club: ik verwerk ze enkel in haar opdracht, en bij
+      de start van een samenwerking leg ik dat vast in een verwerkersovereenkomst. Een trainer
+      ziet alleen zijn eigen ploeg.</p>
+      <p class="muted">Er zijn geen andere partijen bij betrokken: geen reclame, geen
+      statistiekendiensten, geen doorverkoop.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>MatchDelegate is gebouwd door <b>Tim Buyse</b>, afgevaardigde bij een Oost-Vlaamse
+    jeugdploeg, omdat hij het zelf elke zaterdag nodig had.</p>
+    <p><a href="https://timbuyse.github.io/MatchDelegate/">Naar de app</a> ·
+    <a href="mailto:buysesorgeloos@gmail.com">buysesorgeloos@gmail.com</a></p>
+  </footer>
+
+</div>
+
+</body>
+</html>
