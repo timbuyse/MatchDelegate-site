@@ -176,15 +176,19 @@
   }
   .hero-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
   /* Stille verwijzing naar wie het al gebruikt: geen banner, gewoon een feit. */
+  /* Eén doorlopende regel. Niet de hele regel als flexrij zetten: dan wordt elk stukje tekst rond
+     de <b> een eigen kolom en leest het als drie kolommetjes naast elkaar. */
   .proof {
     margin-top: 20px; font-size: 15px;
     color: rgba(255, 255, 255, .66);
-    display: flex; align-items: center; gap: 9px;
+    display: flex; align-items: baseline; gap: 9px;
   }
+  .proof span { display: block; }
   .proof b { color: rgba(255, 255, 255, .92); font-weight: 700; }
   .proof::before {
     content: ''; width: 8px; height: 8px; border-radius: 50%;
     background: var(--grn); flex-shrink: 0;
+    position: relative; top: -3px;
   }
   .btn {
     display: inline-flex; align-items: center; justify-content: center;
@@ -406,7 +410,7 @@
           <a class="btn btn-green" href="#contact">Eerste clubs gezocht</a>
           <a class="btn btn-outline" href="voorbeeld/voorbeeld-wedstrijdverslag.pdf" target="_blank" rel="noopener">Bekijk een voorbeeldverslag</a>
         </div>
-        <p class="proof">Loopt vandaag bij <b>twee jeugdploegen</b> van een Oost-Vlaamse club.</p>
+        <p class="proof"><span>Loopt vandaag bij <b>twee jeugdploegen</b> van een Oost-Vlaamse club.</span></p>
       </div>
     </div>
 
@@ -484,7 +488,7 @@
           achteraf.</p>
         </div>
         <div class="beeld">
-          <img src="img/s-speeltijd.jpg" width="820" height="960" loading="lazy"
+          <img src="img/s-speeltijd.jpg" width="820" height="1570" loading="lazy"
                alt="De bank gesorteerd op minst gespeeld, en per speler op het veld zijn minuten en aandeel">
         </div>
       </div>
@@ -572,7 +576,7 @@
       <div class="zij">
         <p><b>Wat het kost</b><br>Tijdens de piloot niets. Daarna spreken we een prijs per ploeg per
         seizoen af, in overleg met de club — één factuur, geen abonnement per trainer.</p>
-        <a class="mail" href="mailto:buysesorgeloos@gmail.com?subject=MatchDelegate%20-%20piloot">buysesorgeloos@gmail.com</a>
+        <a class="mail" href="mailto:info@matchdelegate.be?subject=MatchDelegate%20-%20piloot">info@matchdelegate.be</a>
       </div>
     </div>
   </div>
@@ -693,7 +697,7 @@
     <p>MatchDelegate is gebouwd door <b>Tim Buyse</b>, afgevaardigde bij een Oost-Vlaamse
     jeugdploeg, omdat hij het zelf elke zaterdag nodig had.</p>
     <p style="margin-top:8px"><a href="https://timbuyse.github.io/MatchDelegate/">Naar de app</a> ·
-    <a href="mailto:buysesorgeloos@gmail.com">buysesorgeloos@gmail.com</a></p>
+    <a href="mailto:info@matchdelegate.be">info@matchdelegate.be</a></p>
   </div>
 </footer>
 
