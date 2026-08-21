@@ -93,6 +93,8 @@
     white-space: nowrap;
   }
   .nav-links a:hover { color: #fff; }
+  .alleen-mobiel { display: none; }
+  @media (max-width: 780px) { .alleen-mobiel { display: block; } }
   .nav-cta { display: flex; gap: 9px; align-items: center; flex-shrink: 0; }
   .btn-nav {
     font-size: 15.5px;
@@ -120,7 +122,10 @@
     grid-template-columns: 1.05fr .95fr;
     gap: 56px;
     align-items: center;
-    padding: 62px 0 68px;
+    /* Let op: dit element IS de .wrap, dus een `padding` met 0 links/rechts wist de zijmarge van
+       .wrap uit. Gevolg was dat de hero 24px verder naar links begon dan de menubalk en de tekst
+       eronder, en op een telefoon tegen de rand plakte. Daarom hier expliciet dezelfde 24px. */
+    padding: 62px 24px 68px;
   }
 
   /* ---------- opstartscherm, exact zoals de app ---------- */
@@ -359,7 +364,7 @@
   /* ---------- smaller ---------- */
 
   @media (max-width: 900px) {
-    .hero-in { grid-template-columns: 1fr; gap: 38px; padding: 44px 0 52px; }
+    .hero-in { grid-template-columns: 1fr; gap: 38px; padding: 44px 24px 52px; }
     .toestel { max-width: 250px; }
     .feat, .contact { grid-template-columns: 1fr; gap: 26px; }
     .feat .beeld, .feat .txt, .feat:nth-child(even) .beeld, .feat:nth-child(even) .txt { order: 0; }
@@ -367,9 +372,45 @@
     section { padding: 52px 0; }
     .contact { padding: 30px 24px; }
   }
-  @media (max-width: 720px) {
-    .nav-links { display: none; }
-    .nav-cta { margin-left: auto; }
+  /* ---------- menu op een telefoon ---------- */
+  /* Drie keuzes plus Contact en Login passen niet naast elkaar op 390px, dus daar gaan de keuzes
+     achter een uitklapknop. De knop Login blijft altijd zichtbaar: dat is de hoofdactie. */
+  .menu-knop {
+    display: none;
+    background: none; border: 1px solid rgba(255, 255, 255, .35); border-radius: 8px;
+    width: 42px; height: 40px; cursor: pointer; padding: 0;
+    flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  }
+  .menu-knop span {
+    display: block; width: 18px; height: 2px; border-radius: 2px; background: #fff;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+  .menu-knop[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .menu-knop[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .menu-knop[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  @media (max-width: 780px) {
+    nav .wrap { gap: 12px; }
+    .brand span { display: none; }          /* enkel het merkteken, de naam staat in de hero */
+    .menu-knop { display: flex; }
+    .nav-links {
+      position: absolute; top: var(--nav-h); left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 0;
+      margin: 0;
+      background: rgba(15, 23, 42, .98);
+      backdrop-filter: saturate(140%) blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+      max-height: 0; overflow: hidden;
+      transition: max-height .25s ease;
+    }
+    .nav-links.open { max-height: 260px; }
+    .nav-links a {
+      padding: 15px 24px;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      font-size: 16.5px;
+    }
+    .nav-links a:first-child { border-top: 0; }
+    .btn-ghost { display: none; }            /* Contact staat in het uitklapmenu */
   }
 </style>
 </head>
@@ -393,16 +434,20 @@
   <div class="wrap">
     <a class="brand" href="#top">
       <img src="img/logo-mark.png" alt="">
-      MatchDelegate
+      <span>MatchDelegate</span>
     </a>
-    <div class="nav-links">
+    <div class="nav-links" id="menu">
       <a href="#hoe">Hoe het werkt</a>
       <a href="#club">Voor de club</a>
       <a href="#vragen">Vragen</a>
+      <a href="#contact" class="alleen-mobiel">Contact</a>
     </div>
     <div class="nav-cta">
       <a class="btn-nav btn-ghost" href="#contact">Contact</a>
       <a class="btn-nav btn-blue" href="https://timbuyse.github.io/MatchDelegate/">Login</a>
+      <button class="menu-knop" id="menu-knop" aria-label="Menu" aria-expanded="false" aria-controls="menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
@@ -726,6 +771,26 @@
 </footer>
 
 <script>
+  // Het uitklapmenu op een telefoon. Sluit na een keuze, bij een tik ernaast en met Escape —
+  // anders blijft het open staan over de pagina die je net gekozen hebt.
+  (function () {
+    var knop = document.getElementById('menu-knop'), menu = document.getElementById('menu');
+    if (!knop || !menu) return;
+    var zet = function (open) {
+      menu.classList.toggle('open', open);
+      knop.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    knop.addEventListener('click', function (e) {
+      e.stopPropagation();
+      zet(knop.getAttribute('aria-expanded') !== 'true');
+    });
+    menu.addEventListener('click', function (e) { if (e.target.tagName === 'A') zet(false); });
+    document.addEventListener('click', function (e) {
+      if (!menu.contains(e.target) && e.target !== knop) zet(false);
+    });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') zet(false); });
+  })();
+
   // Het opstartscherm weghalen zodra de animatie uitgespeeld is (logo .6s, balk tot 1,4s, titel tot
   // 1,2s — dus 1,9s en dan wegvloeien). Daarna uit het document, zodat er niets achterblijft.
   (function () {
