@@ -123,18 +123,43 @@
     padding: 62px 0 68px;
   }
 
-  .boot { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
-  .boot img { width: 56px; height: 56px; object-fit: contain; opacity: 0; animation: bootLogo .6s ease forwards; }
-  .boot-bar {
-    width: 3px; height: 44px; background: var(--grn); border-radius: 2px;
-    transform: scaleY(0); transform-origin: center;
-    animation: bootBar .8s .35s cubic-bezier(.22, 1, .36, 1) forwards;
+  /* ---------- opstartscherm, exact zoals de app ---------- */
+  /* Zelfde tijden, maten en versnellingscurve als #splash in de app: het logo komt op, de groene
+     balk rolt uit vanuit het midden, dan verschijnt de titel. Daarna schuift het weg. */
+  /* Standaard weg: zonder javascript kan niemand het opstartscherm doen verdwijnen, en dan zou de
+     bezoeker naar een dood beeld kijken. Enkel met javascript (en zonder de wens voor minder
+     beweging) komt het in beeld. */
+  #splash { display: none; }
+  html.js #splash {
+    position: fixed; inset: 0; z-index: 9999;
+    background: url('img/background_logo.jpg') center/cover no-repeat;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+    pointer-events: none;
+    transition: opacity .5s ease, visibility .5s ease;
   }
-  .boot-txt { opacity: 0; animation: bootFade .5s .65s ease forwards; }
-  .boot-title { font-size: 17px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; line-height: 1.2; }
-  .boot-name { font-size: 10.5px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: rgba(255, 255, 255, .5); }
+  #splash::before { content: ''; position: absolute; inset: 0; background: rgba(10, 18, 35, .55); }
+  #splash.weg { opacity: 0; visibility: hidden; }
+  #splash img {
+    width: 140px; height: 140px; object-fit: contain; position: relative;
+    opacity: 0; animation: splashLogo .6s ease forwards;
+  }
+  #splash-bar {
+    width: 150px; height: 3px; background: var(--grn); border-radius: 2px; position: relative;
+    transform: scaleX(0); transform-origin: center;
+    animation: splashBar 1s .4s cubic-bezier(.22, 1, .36, 1) forwards;
+  }
+  #splash-titles {
+    display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative;
+    opacity: 0; animation: splashFade .5s .7s ease forwards;
+  }
+  #splash-title { color: #fff; font-size: 24px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+  #splash-name { color: rgba(255, 255, 255, .55); font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; }
 
-  .hero-lead { opacity: 0; animation: bootFade .7s 1s ease forwards; }
+  @keyframes splashLogo { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @keyframes splashBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes splashFade { from { opacity: 0; } to { opacity: 1; } }
+
+  .hero-lead { opacity: 0; animation: bootFade .7s .2s ease forwards; }
   .hero h1 {
     font-size: clamp(30px, 4.2vw, 46px);
     font-weight: 800;
@@ -150,6 +175,17 @@
     max-width: 46ch;
   }
   .hero-btns { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  /* Stille verwijzing naar wie het al gebruikt: geen banner, gewoon een feit. */
+  .proof {
+    margin-top: 20px; font-size: 15px;
+    color: rgba(255, 255, 255, .66);
+    display: flex; align-items: center; gap: 9px;
+  }
+  .proof b { color: rgba(255, 255, 255, .92); font-weight: 700; }
+  .proof::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--grn); flex-shrink: 0;
+  }
   .btn {
     display: inline-flex; align-items: center; justify-content: center;
     padding: 14px 24px; min-height: 50px; border-radius: 10px;
@@ -331,6 +367,15 @@
 </script>
 <body>
 
+<div id="splash" aria-hidden="true">
+  <img src="img/logo-mark.png" alt="">
+  <div id="splash-bar"></div>
+  <div id="splash-titles">
+    <div id="splash-title">Match Delegate</div>
+    <div id="splash-name">Manage &nbsp;·&nbsp; Track &nbsp;·&nbsp; Share</div>
+  </div>
+</div>
+
 <nav>
   <div class="wrap">
     <a class="brand" href="#top">
@@ -339,9 +384,8 @@
     </a>
     <div class="nav-links">
       <a href="#hoe">Hoe het werkt</a>
-      <a href="#vragen">Vragen</a>
       <a href="#club">Voor de club</a>
-      <a href="#privacy">Privacy</a>
+      <a href="#vragen">Vragen</a>
     </div>
     <div class="nav-cta">
       <a class="btn-nav btn-ghost" href="#contact">Contact</a>
@@ -354,15 +398,6 @@
   <div class="wrap hero-in">
 
     <div>
-      <div class="boot">
-        <img src="img/logo-mark.png" alt="MatchDelegate">
-        <div class="boot-bar"></div>
-        <div class="boot-txt">
-          <div class="boot-title">Match Delegate</div>
-          <div class="boot-name">Manage &nbsp;·&nbsp; Track &nbsp;·&nbsp; Share</div>
-        </div>
-      </div>
-
       <div class="hero-lead">
         <h1>De wedstrijd zelf opvolgen, niet <em>achteraf reconstrueren</em></h1>
         <p>De app waarmee de afgevaardigde of de trainer aan de zijlijn de jeugdwedstrijd volgt:
@@ -371,6 +406,7 @@
           <a class="btn btn-green" href="#contact">Eerste clubs gezocht</a>
           <a class="btn btn-outline" href="voorbeeld/voorbeeld-wedstrijdverslag.pdf" target="_blank" rel="noopener">Bekijk een voorbeeldverslag</a>
         </div>
+        <p class="proof">Loopt vandaag bij <b>twee jeugdploegen</b> van een Oost-Vlaamse club.</p>
       </div>
     </div>
 
@@ -486,12 +522,70 @@
   </div>
 </section>
 
+
+
+<section id="club">
+  <div class="wrap">
+    <div class="narrow rv">
+      <div class="label">In de club</div>
+      <h2>Wie wat doet</h2>
+      <p class="sub">Eén iemand van de club beheert de ploegen en geeft trainers toegang. Daar hebt
+      u mij niet voor nodig.</p>
+    </div>
+    <div class="rollen rv">
+      <div class="rol">
+        <div class="wie">Afgevaardigde</div>
+        <p>Volgt de wedstrijd op in de app. Dat is het werk waarvoor ze gemaakt is.</p>
+      </div>
+      <div class="rol">
+        <div class="wie">Trainer</div>
+        <p>Zet de kern klaar, plant de opstelling per kwart, bekijkt achteraf de cijfers van zijn
+        ploeg.</p>
+      </div>
+      <div class="rol">
+        <div class="wie">TVJO of coördinator</div>
+        <p>Ziet alle ploegen van de club in één overzicht, en beheert zelf wie bij welke ploeg
+        toegang heeft.</p>
+      </div>
+      <div class="rol">
+        <div class="wie">Ouder</div>
+        <p>Kijkt live mee met de wedstrijd en met de statistieken van de ploeg, zonder iets te
+        kunnen wijzigen — en zonder account als het moet.</p>
+      </div>
+    </div>
+    <p class="muted rv" style="margin-top:26px">Ook een tornooidag met meerdere korte wedstrijden
+    houdt u in één geheel bij, met een verslag per tornooi.</p>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact rv">
+      <div>
+        <div class="label" style="color:var(--grnb)">De piloot</div>
+        <h2>Eerste clubs gezocht</h2>
+        <p>Een half seizoen proefdraaien, kosteloos en zonder verbintenis: drie tot vijf ploegen
+        gebruiken de app tot de kerstperiode, met één iemand van de club die de ploegen beheert.</p>
+        <p>Ik kom het één keer ter plaatse uitleggen aan de trainers en afgevaardigden, en ben
+        tijdens de piloot bereikbaar. In januari bekijken we samen of het iets opgeleverd heeft.</p>
+      </div>
+      <div class="zij">
+        <p><b>Wat het kost</b><br>Tijdens de piloot niets. Daarna spreken we een prijs per ploeg per
+        seizoen af, in overleg met de club — één factuur, geen abonnement per trainer.</p>
+        <a class="mail" href="mailto:buysesorgeloos@gmail.com?subject=MatchDelegate%20-%20piloot">buysesorgeloos@gmail.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 <section id="vragen">
   <div class="wrap">
     <div class="narrow rv">
       <div class="label">Veelgestelde vragen</div>
       <h2>Wat de app wel en niet doet</h2>
-      <p class="sub">De vragen die trainers en coördinatoren als eerste stellen.</p>
+      <p class="sub">De vragen die trainers en coördinatoren als eerste stellen — inclusief wat er met de gegevens van de spelers gebeurt.</p>
     </div>
 
     <div class="vragen rv">
@@ -572,78 +666,25 @@
         inbegrepen. <a class="dl" href="#contact" style="margin-top:8px">Neem contact op</a></p></div>
       </details>
 
-    </div>
-  </div>
-</section>
+      <details class="vraag">
+        <summary>Welke gegevens houdt de app over een speler bij?</summary>
+        <div class="antw"><p>Alleen de naam, en optioneel het rugnummer en de positie.
+        <b>Geen geboortedatum, geen adres, geen telefoonnummer, geen foto's en niets medisch</b> —
+        die velden bestaan niet. Daarnaast per wedstrijd of hij mee was, hoeveel hij speelde, en
+        zijn doelpunten, kaarten en wissels.</p></div>
+      </details>
 
-<section id="club">
-  <div class="wrap">
-    <div class="narrow rv">
-      <div class="label">In de club</div>
-      <h2>Wie wat doet</h2>
-      <p class="sub">Eén iemand van de club beheert de ploegen en geeft trainers toegang. Daar hebt
-      u mij niet voor nodig.</p>
-    </div>
-    <div class="rollen rv">
-      <div class="rol">
-        <div class="wie">Afgevaardigde</div>
-        <p>Volgt de wedstrijd op in de app. Dat is het werk waarvoor ze gemaakt is.</p>
-      </div>
-      <div class="rol">
-        <div class="wie">Trainer</div>
-        <p>Zet de kern klaar, plant de opstelling per kwart, bekijkt achteraf de cijfers van zijn
-        ploeg.</p>
-      </div>
-      <div class="rol">
-        <div class="wie">TVJO of coördinator</div>
-        <p>Ziet alle ploegen van de club in één overzicht, en beheert zelf wie bij welke ploeg
-        toegang heeft.</p>
-      </div>
-      <div class="rol">
-        <div class="wie">Ouder</div>
-        <p>Kijkt live mee met de wedstrijd en met de statistieken van de ploeg, zonder iets te
-        kunnen wijzigen — en zonder account als het moet.</p>
-      </div>
-    </div>
-    <p class="muted rv" style="margin-top:26px">Ook een tornooidag met meerdere korte wedstrijden
-    houdt u in één geheel bij, met een verslag per tornooi.</p>
-  </div>
-</section>
+      <details class="vraag">
+        <summary>Waar staan die gegevens, en van wie zijn ze?</summary>
+        <div class="antw"><p>In een databank in het datacenter van Google in Saint-Ghislain, dus in
+        <b>België</b>, binnen de Europese Unie. Ze blijven eigendom van de club: ik verwerk ze enkel
+        in haar opdracht, en bij de start van een samenwerking leg ik dat vast in een
+        verwerkersovereenkomst. Een trainer ziet alleen zijn eigen ploeg. Er zijn geen andere
+        partijen bij betrokken: geen reclame, geen statistiekendiensten, geen doorverkoop.</p></div>
+      </details>
 
-<section id="contact">
-  <div class="wrap">
-    <div class="contact rv">
-      <div>
-        <div class="label" style="color:var(--grnb)">De piloot</div>
-        <h2>Eerste clubs gezocht</h2>
-        <p>Een half seizoen proefdraaien, kosteloos en zonder verbintenis: drie tot vijf ploegen
-        gebruiken de app tot de kerstperiode, met één iemand van de club die de ploegen beheert.</p>
-        <p>Ik kom het één keer ter plaatse uitleggen aan de trainers en afgevaardigden, en ben
-        tijdens de piloot bereikbaar. In januari bekijken we samen of het iets opgeleverd heeft.</p>
-      </div>
-      <div class="zij">
-        <p><b>Wat het kost</b><br>Tijdens de piloot niets. Daarna spreken we een prijs per ploeg per
-        seizoen af, in overleg met de club — één factuur, geen abonnement per trainer.</p>
-        <a class="mail" href="mailto:buysesorgeloos@gmail.com?subject=MatchDelegate%20-%20piloot">buysesorgeloos@gmail.com</a>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section id="privacy">
-  <div class="wrap narrow rv">
-    <div class="label">Privacy</div>
-    <h2>Over de gegevens van de spelers</h2>
-    <p class="sub">Het gaat over kinderen, dus dit staat er zwart op wit.</p>
-    <p style="margin-top:18px">Van een speler houdt de app alleen de naam bij, en optioneel het
-    rugnummer en de positie. <b>Geen geboortedatum, geen adres, geen telefoonnummer, geen foto's en
-    niets medisch</b> — die velden bestaan niet.</p>
-    <p>De gegevens staan in een databank in het datacenter van Google in Saint-Ghislain, dus in
-    België. Ze blijven eigendom van de club: ik verwerk ze enkel in haar opdracht, en bij de start
-    van een samenwerking leg ik dat vast in een verwerkersovereenkomst. Een trainer ziet alleen zijn
-    eigen ploeg.</p>
-    <p class="muted">Er zijn geen andere partijen bij betrokken: geen reclame, geen
-    statistiekendiensten, geen doorverkoop.</p>
+    </div>
   </div>
 </section>
 
@@ -657,6 +698,17 @@
 </footer>
 
 <script>
+  // Het opstartscherm weghalen zodra de animatie uitgespeeld is (logo .6s, balk tot 1,4s, titel tot
+  // 1,2s — dus 1,9s en dan wegvloeien). Daarna uit het document, zodat er niets achterblijft.
+  (function () {
+    var s = document.getElementById('splash');
+    if (!s || !document.documentElement.classList.contains('js')) { if (s) s.remove(); return; }
+    setTimeout(function () {
+      s.classList.add('weg');
+      setTimeout(function () { if (s.parentNode) s.parentNode.removeChild(s); }, 600);
+    }, 1900);
+  })();
+
   // Onderdelen laten verschijnen zodra ze in beeld komen. Wie bewegende beelden liever niet ziet,
   // krijgt alles meteen te zien (zie de media-query in de stijl hierboven).
   (function () {
