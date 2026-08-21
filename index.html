@@ -343,9 +343,18 @@
     padding: 30px 0 54px;
     font-size: 14.5px; color: var(--txt2);
   }
-  footer p { max-width: none; }
+  footer p { max-width: 52ch; }
+  footer p + p { margin-top: 8px; }
   footer a { text-decoration: underline; text-decoration-color: var(--bdr); }
   footer b { color: var(--blk); }
+  .foot { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 48px; }
+  .foot .geen b { color: var(--grn2); }
+  .fine {
+    margin-top: 26px; padding-top: 16px;
+    border-top: 1px solid var(--bdr);
+    font-size: 13px; color: var(--txt2);
+  }
+  @media (max-width: 760px) { .foot { grid-template-columns: 1fr; gap: 20px; } }
 
   /* ---------- smaller ---------- */
 
@@ -693,11 +702,26 @@
 </section>
 
 <footer>
+  <div class="wrap foot">
+
+    <div>
+      <p>MatchDelegate is gebouwd door <b>Tim Buyse</b>, afgevaardigde bij een Oost-Vlaamse
+      jeugdploeg, omdat hij het zelf elke zaterdag nodig had.</p>
+      <p><a href="mailto:info@matchdelegate.be">info@matchdelegate.be</a> ·
+      <a href="https://timbuyse.github.io/MatchDelegate/">Naar de app</a></p>
+    </div>
+
+    <div>
+      <p class="geen"><b>Deze site plaatst geen cookies</b> en meet geen bezoekers. Er staat geen
+      script van iemand anders op: alles komt van dit domein zelf. Daarom is er ook geen
+      cookiemelding — er valt niets toe te staan.</p>
+      <p>Wat de app over spelers bijhoudt, staat bij de <a href="#vragen">veelgestelde
+      vragen</a>.</p>
+    </div>
+
+  </div>
   <div class="wrap">
-    <p>MatchDelegate is gebouwd door <b>Tim Buyse</b>, afgevaardigde bij een Oost-Vlaamse
-    jeugdploeg, omdat hij het zelf elke zaterdag nodig had.</p>
-    <p style="margin-top:8px"><a href="https://timbuyse.github.io/MatchDelegate/">Naar de app</a> ·
-    <a href="mailto:info@matchdelegate.be">info@matchdelegate.be</a></p>
+    <p class="fine">© 2026 Tim Buyse · MatchDelegate</p>
   </div>
 </footer>
 
