@@ -390,9 +390,15 @@
   .menu-knop[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
   @media (max-width: 780px) {
-    nav .wrap { gap: 12px; }
-    .brand span { display: none; }          /* enkel het merkteken, de naam staat in de hero */
-    .menu-knop { display: flex; }
+    /* Links het logo mét de naam, rechts Login en de menuknop. Dat past op 390px als het merk
+       iets kleiner wordt en de tussenruimtes krimpen; op smallere toestellen gaat de zijmarge
+       van de balk mee naar beneden. De naam nooit laten afbreken. */
+    nav .wrap { gap: 10px; }
+    .brand { font-size: 16.5px; gap: 8px; min-width: 0; white-space: nowrap; }
+    .brand img { width: 30px; height: 30px; }
+    .btn-nav { font-size: 15px; padding: 10px 15px; }
+    .nav-cta { gap: 8px; }
+    .menu-knop { display: flex; width: 40px; height: 38px; }
     .nav-links {
       position: absolute; top: var(--nav-h); left: 0; right: 0;
       flex-direction: column; align-items: stretch; gap: 0;
@@ -411,6 +417,14 @@
     }
     .nav-links a:first-child { border-top: 0; }
     .btn-ghost { display: none; }            /* Contact staat in het uitklapmenu */
+  }
+
+  /* Smalle toestellen (oudere iPhones, 320-380px): de zijmarge van de balk krimpt mee, zodat
+     logo + naam + Login + menuknop ook daar naast elkaar blijven staan. */
+  @media (max-width: 420px) {
+    nav .wrap { padding: 0 16px; gap: 8px; }
+    .brand { font-size: 15.5px; }
+    .btn-nav { padding: 10px 13px; }
   }
 </style>
 </head>
@@ -611,8 +625,11 @@
         kunnen wijzigen — en zonder account als het moet.</p>
       </div>
     </div>
-    <p class="muted rv" style="margin-top:26px">Ook een tornooidag met meerdere korte wedstrijden
-    houdt u in één geheel bij, met een verslag per tornooi.</p>
+    <p class="muted rv" style="margin-top:26px">Ieder werkt op het toestel dat hij bij zich heeft:
+    de app draait op <b>iPhone en Android</b>, op <b>tablet</b> en gewoon <b>in de browser op een
+    laptop</b>. Aan de zijlijn is dat een telefoon; de cijfers achteraf bekijkt u even goed op een
+    groot scherm. Ook een tornooidag met meerdere korte wedstrijden houdt u in één geheel bij, met
+    een verslag per tornooi.</p>
   </div>
 </section>
 
@@ -704,10 +721,14 @@
       </details>
 
       <details class="vraag">
-        <summary>Moet er iets geïnstalleerd worden?</summary>
-        <div class="antw"><p>Nee, en er is geen app store nodig. U opent de app in de browser van
-        uw telefoon en kan ze daarna <b>op het beginscherm zetten</b>, waarna ze opent als een
-        gewone app. Werkt op iPhone en op Android.</p></div>
+        <summary>Moet er iets geïnstalleerd worden? En op welke toestellen werkt het?</summary>
+        <div class="antw"><p>Nee, en er is geen app store nodig. U opent de app in een browser, en
+        op een telefoon of tablet kan u ze daarna <b>op het beginscherm zetten</b>, waarna ze opent
+        als een gewone app.</p>
+        <p>Het werkt op <b>iPhone en Android</b>, op <b>tablet</b>, en gewoon <b>in de browser op een
+        laptop of pc</b> — dezelfde app, dezelfde gegevens. In de praktijk volgt de afgevaardigde de
+        wedstrijd op zijn telefoon, en bekijkt de trainer of de TVJO de cijfers achteraf op een groter
+        scherm.</p></div>
       </details>
 
       <details class="vraag">
