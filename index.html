@@ -398,6 +398,14 @@
     .brand img { width: 30px; height: 30px; }
     .btn-nav { font-size: 15px; padding: 10px 15px; }
     .nav-cta { gap: 8px; }
+  }
+
+  /* Login en de menuknop tegen de RECHTERRAND. Op mobiel wordt .nav-links een zwevend paneel
+     (position:absolute) en stapt het uit de flexrij — en net dat element droeg `margin-left:auto`,
+     de duw naar rechts. Zonder deze regel plakken de knoppen tegen de merknaam, met een gat van
+     ruim 80px aan de rechterkant. */
+  @media (max-width: 780px) {
+    .nav-cta { margin-left: auto; }
     .menu-knop { display: flex; width: 40px; height: 38px; }
     .nav-links {
       position: absolute; top: var(--nav-h); left: 0; right: 0;
