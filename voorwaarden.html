@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gebruiksvoorwaarden — MatchDelegate</title>
+<meta name="description" content="De gebruiksvoorwaarden van MatchDelegate: wat de app doet, wat de club afspreekt, wat er met de gegevens gebeurt en wat er niet beloofd wordt.">
+<link rel="icon" href="img/favicon.png">
+<meta name="theme-color" content="#0f172a">
+<meta property="og:title" content="Gebruiksvoorwaarden — MatchDelegate">
+<meta property="og:description" content="Wat de app doet, wat de club afspreekt en wat er met de gegevens gebeurt.">
+<meta property="og:type" content="article">
+<style>
+  /* Dezelfde kleuren en letters als de startpagina; enkel de opmaak die een tekstpagina nodig heeft.
+     De volledige stijl van index.html overnemen zou betekenen dat elke wijziging daar hier vergeten
+     wordt — dit blijft klein genoeg om te kloppen. */
+  :root {
+    --blk: #0f172a; --blk2: #1e293b;
+    --grn: #2f9e57; --grn2: #247d44; --grnp: #dcf1e3;
+    --blu: #2f74bd;
+    --bg: #f5f6f5; --card: #fff;
+    --txt: #171717; --txt2: #6b7280; --bdr: #e5e7eb;
+    --shadow: 0 2px 8px rgba(0, 0, 0, .1);
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--txt); line-height: 1.6; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  nav { background: var(--blk); position: sticky; top: 0; z-index: 50; }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 74px; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 800; font-size: 17px; }
+  .brand img { width: 30px; height: 30px; object-fit: contain; }
+  .btn-nav { display: inline-block; padding: 9px 16px; border-radius: 10px; font-size: 14px; font-weight: 700; text-decoration: none; }
+  .btn-blue { background: var(--blu); color: #fff; }
+  .btn-ghost { color: #fff; border: 1px solid rgba(255, 255, 255, .35); margin-right: 8px; }
+  @media (max-width: 560px) { .btn-ghost { display: none; } }
+
+  main { padding: 44px 0 64px; }
+  .doc { background: var(--card); border: 1px solid var(--bdr); border-radius: 16px;
+         box-shadow: var(--shadow); padding: 40px; max-width: 760px; margin: 0 auto; }
+  @media (max-width: 640px) { .doc { padding: 26px 20px; border-radius: 12px; } }
+
+  .doc h1 { font-size: 30px; line-height: 1.2; letter-spacing: -.02em; }
+  .doc .datum { color: var(--txt2); font-size: 14px; margin-top: 6px; }
+  .doc h2 { font-size: 18px; margin: 32px 0 10px; letter-spacing: -.01em; }
+  .doc h2:first-of-type { margin-top: 26px; }
+  .doc p { max-width: 64ch; margin-bottom: 12px; }
+  .doc ul, .doc ol { margin: 0 0 12px 22px; }
+  .doc li { margin-bottom: 6px; max-width: 62ch; }
+  .doc a { color: var(--grn2); }
+  .doc hr { border: 0; border-top: 1px solid var(--bdr); margin: 26px 0; }
+  .let { background: var(--grnp); border-left: 4px solid var(--grn); border-radius: 0 10px 10px 0;
+         padding: 14px 16px; margin: 16px 0; }
+  .let p:last-child { margin-bottom: 0; }
+  .terug { display: inline-block; margin-bottom: 18px; color: var(--txt2); text-decoration: none; font-size: 14px; }
+  .terug:hover { color: var(--txt); }
+
+  footer { background: var(--blk); color: #cbd5e1; padding: 34px 0; margin-top: 10px; font-size: 14px; }
+  footer a { color: #fff; }
+  footer .fine { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.15);
+                 font-size: 13px; color: #94a3b8; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <img src="img/logo-mark.png" alt="">
+      <span>MatchDelegate</span>
+    </a>
+    <div>
+      <a class="btn-nav btn-ghost" href="index.html#contact">Contact</a>
+      <a class="btn-nav btn-blue" href="https://timbuyse.github.io/MatchDelegate/">Login</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <article class="doc">
+    <a class="terug" href="index.html">‹ Terug naar de startpagina</a>
+    <h1>Gebruiksvoorwaarden</h1>
+    <p class="datum">Versie 1.1 · 27 augustus 2026</p>
+
+    <h2>1. Wie wij zijn</h2>
+    <p>MatchDelegate is een webapp om wedstrijden van jeugdploegen voor te bereiden en op te volgen.
+    Ze wordt aangeboden door <b>Tim Buyse</b>, hieronder “de aanbieder”. Het postadres wordt op
+    eenvoudig verzoek meegedeeld en staat in de verwerkersovereenkomst die een club ondertekent.</p>
+    <p>Contact: <a href="mailto:info@matchdelegate.be">info@matchdelegate.be</a></p>
+
+    <h2>2. Wat de app doet</h2>
+    <p>Met MatchDelegate stelt een ploeg haar wedstrijden samen: de selectie, de opstelling per blok,
+    de geplande wissels, en tijdens de wedstrijd de stand, de doelpunten, de kaarten en de
+    speelminuten. Achteraf levert ze een verslag, een PDF en cijfers over het seizoen.</p>
+    <p>De app is een <b>hulpmiddel</b>. Ze vervangt geen officiële wedstrijdbladen en heeft geen
+    enkele status bij een bond of federatie.</p>
+
+    <h2>3. Wie ze mag gebruiken</h2>
+    <ul>
+      <li>De app is bedoeld voor <b>clubs en ploegen</b>: een clubbeheerder maakt ploegen aan,
+      ploegbeheerders houden de wedstrijden bij, en kijkers volgen mee.</li>
+      <li>Wie toegang geeft, is verantwoordelijk voor <b>wie</b> die toegang krijgt. Toegang tot een
+      ploeg betekent toegang tot de gegevens van die ploeg.</li>
+      <li>Accounts zijn persoonlijk. Deel je aanmeldgegevens niet.</li>
+      <li>De app is niet bedoeld voor kinderen om zelf te gebruiken. Een account wordt aangemaakt
+      door een trainer, afgevaardigde of clubverantwoordelijke.</li>
+    </ul>
+
+    <h2>4. Wat de club verklaart en waarvoor zij instaat</h2>
+    <p>De club beslist welke gegevens in de app terechtkomen en waarom. Door de app te gebruiken
+    <b>verklaart en garandeert</b> de club dat:</p>
+    <ol>
+      <li>zij een <b>geldige reden</b> heeft om deze gegevens over haar spelers bij te houden, en dat
+      die reden past binnen de wetgeving over gegevensbescherming;</li>
+      <li>zij de <b>ouders of voogden geïnformeerd</b> heeft dat deze gegevens in de app staan, wie
+      ze kan zien en bij wie ze terechtkunnen met vragen — het hoofdstuk <i>Gegevens en privacy</i>
+      in de handleiding mag daarvoor gebruikt worden;</li>
+      <li>zij <b>enkel gegevens invoert die nodig zijn</b> om de ploeg te doen werken;</li>
+      <li>zij <b>geen gevoelige gegevens</b> invoert: geen gezondheidsgegevens of medische
+      informatie, geen gegevens over thuissituatie, afkomst, geloof of gezinsleven, en geen gegevens
+      van personen die niets met de ploeg te maken hebben. De vrije velden — een notitie bij een
+      speler, een notitie bij een wedstrijd, de reden van afwezigheid — zijn bedoeld voor
+      <b>sportieve</b> opmerkingen;</li>
+      <li>zij <b>toegang intrekt</b> zodra iemand niet meer bij de ploeg hoort, en dat zij haar
+      trainers en afgevaardigden op deze afspraken wijst.</li>
+    </ol>
+
+    <h2>5. Vrijwaring</h2>
+    <p>Komt er een klacht, een vordering, een onderzoek of een boete voort uit het feit dat de club
+    een van de verklaringen in artikel 4 niet is nagekomen, dan draagt <b>de club</b> daarvan de
+    gevolgen. Zij vrijwaart de aanbieder voor de kosten die daaruit voortvloeien, met inbegrip van
+    een redelijke verdediging. Dit geldt niet voor schade die door een fout van de aanbieder zelf
+    veroorzaakt is.</p>
+
+    <h2>6. Kosten</h2>
+    <p>Tijdens de <b>pilootfase</b> is het gebruik gratis. Komt er later een betalende versie, dan
+    wordt dat minstens <b>twee maanden</b> vooraf aangekondigd aan de clubs die de app gebruiken, en
+    blijft het gebruik tot dan gratis. Een club is nooit iets verschuldigd zonder een uitdrukkelijke
+    afspraak.</p>
+
+    <h2>7. Gegevens</h2>
+    <ul>
+      <li>Wat de app bewaart en wie het kan zien, staat in het hoofdstuk <b>Gegevens en privacy</b>
+      in de handleiding, in de app zelf.</li>
+      <li>De gegevens staan op de toestellen van de gebruikers en in een databank in
+      <b>de Europese Unie</b> (regio europe-west1).</li>
+      <li>De club beslist welke gegevens er in de app staan en waarom. De aanbieder verwerkt ze
+      <b>in opdracht van de club</b>. Die verhouding staat in de <b>verwerkersovereenkomst</b>, die
+      samen met deze voorwaarden geldt en die een club op verzoek krijgt.</li>
+      <li>Gegevens blijven bewaard zolang de club de app gebruikt. Wil de club oudere seizoenen laten
+      opruimen, dan volstaat een vraag via
+      <a href="mailto:info@matchdelegate.be">info@matchdelegate.be</a>.</li>
+    </ul>
+
+    <h2>8. Beschikbaarheid — wat wij níet beloven</h2>
+    <p>De app wordt aangeboden <b>zoals ze is</b> en <b>zoals ze beschikbaar is</b>, zonder enige
+    garantie. De aanbieder doet redelijke inspanningen om ze werkend en veilig te houden, maar
+    belooft geen ononderbroken beschikbaarheid, geen foutloze werking, geen behoud van functies en
+    geen bewaring van gegevens.</p>
+    <div class="let">
+      <p>Concreet: het kan gebeuren dat de app tijdens een wedstrijd niet beschikbaar is, dat een
+      verslag verloren gaat, of dat een functie verandert of verdwijnt. <b>Houd dus geen gegevens in
+      de app die je nergens anders hebt en die je niet kan missen.</b> De app werkt ook zonder
+      verbinding en synchroniseert later; ook dat is geen garantie.</p>
+    </div>
+    <p>De aanbieder is niet aansprakelijk voor onrechtstreekse schade of gevolgschade — daaronder
+    begrepen een verloren wedstrijdverslag, verkeerd geregistreerde speelminuten, gemiste sportieve
+    kansen, of een beslissing die op de cijfers van de app gebaseerd werd. Voor rechtstreekse schade
+    is de aansprakelijkheid beperkt tot het bedrag dat de club in de twaalf maanden vóór het
+    schadegeval voor het gebruik van de app betaald heeft; is dat nul, dan is er geen vergoeding
+    verschuldigd.</p>
+    <p>Deze beperkingen gelden <b>niet</b> bij bedrog, opzet of zware fout van de aanbieder, noch
+    voor schade door overlijden of lichamelijk letsel, noch waar de wet dwingend anders bepaalt.</p>
+
+    <h2>9. Wijzigingen aan de app</h2>
+    <p>De app wordt geregeld aangepast. Nieuwe of gewijzigde functies worden in de app aangekondigd
+    bij de gebruikers die een ploeg of club beheren. Verdwijnt er iets waarop een club steunt, dan
+    wordt dat vooraf gemeld.</p>
+
+    <h2>10. Stoppen</h2>
+    <ul>
+      <li>Een club of ploegbeheerder kan <b>altijd stoppen</b>, zonder opzegtermijn en zonder
+      kosten.</li>
+      <li>Bij het stoppen krijgt de club op verzoek haar gegevens als <b>exportbestand</b> (Excel of
+      CSV).</li>
+      <li><b>Dertig dagen</b> na de stopzetting worden de gegevens van die club uit de databank
+      verwijderd. Binnen die termijn kan de club nog vragen om ze te bewaren of te herstellen.</li>
+      <li>De aanbieder kan de app stopzetten of de toegang van een gebruiker beëindigen. Bij een
+      stopzetting van de app krijgt de club minstens <b>twee maanden</b> de tijd om haar gegevens te
+      exporteren. Bij een schending van deze voorwaarden gebeurt het beëindigen na een melding en de
+      kans om het recht te zetten — behalve wanneer uitstel schade zou veroorzaken.</li>
+    </ul>
+
+    <h2>11. Wijzigingen aan deze voorwaarden</h2>
+    <p>Wijzigingen worden minstens <b>een maand</b> vooraf gemeld aan de clubs die de app gebruiken.
+    Wie niet akkoord gaat, kan stoppen volgens artikel 10.</p>
+
+    <h2>12. Toepasselijk recht</h2>
+    <p>Op deze voorwaarden is het <b>Belgisch recht</b> van toepassing. Geschillen worden behandeld
+    door de bevoegde rechtbanken van het arrondissement <b>Oost-Vlaanderen, afdeling Gent</b>, tenzij
+    de wet een andere rechtbank dwingend oplegt. Wij lossen liever alles op met een e-mail:
+    <a href="mailto:info@matchdelegate.be">info@matchdelegate.be</a>.</p>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><a href="mailto:info@matchdelegate.be">info@matchdelegate.be</a> ·
+    <a href="index.html">Startpagina</a> ·
+    <a href="https://timbuyse.github.io/MatchDelegate/">Naar de app</a></p>
+    <p class="fine">© 2026 Tim Buyse · matchdelegate.be</p>
+  </div>
+</footer>
+
+</body>
+</html>
