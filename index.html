@@ -74,11 +74,19 @@
     text-decoration: none;
     color: #fff;
     font-weight: 800;
-    letter-spacing: .2px;
-    font-size: 18px;
+    /* Klein kapitaal, net als het opstartscherm: zo springen de M en de D eruit en zie je dat de
+       naam uit twee delen bestaat. Iets meer letterruimte, want kleine kapitalen kruipen dicht
+       tegen elkaar. Nooit text-transform:uppercase erbij — dat heft klein kapitaal op. */
+    font-variant: small-caps;
+    letter-spacing: 1px;
+    font-size: 19px;
     flex-shrink: 0;
   }
   .brand img { width: 34px; height: 34px; object-fit: contain; }
+  /* De merknaam in lopende tekst: dezelfde kleine kapitalen als in de menubalk en het
+     opstartscherm, maar met veel minder letterruimte. Midden in een zin moet het rustig blijven —
+     display-instellingen die op een titel goed staan, vertragen daar het lezen. */
+  .merk { font-variant: small-caps; letter-spacing: .3px; }
   .nav-links {
     display: flex;
     gap: 26px;
@@ -394,7 +402,7 @@
        iets kleiner wordt en de tussenruimtes krimpen; op smallere toestellen gaat de zijmarge
        van de balk mee naar beneden. De naam nooit laten afbreken. */
     nav .wrap { gap: 10px; }
-    .brand { font-size: 16.5px; gap: 8px; min-width: 0; white-space: nowrap; }
+    .brand { font-size: 17.5px; gap: 8px; min-width: 0; white-space: nowrap; }
     .brand img { width: 30px; height: 30px; }
     .btn-nav { font-size: 15px; padding: 10px 15px; }
     .nav-cta { gap: 8px; }
@@ -431,7 +439,7 @@
      logo + naam + Login + menuknop ook daar naast elkaar blijven staan. */
   @media (max-width: 420px) {
     nav .wrap { padding: 0 16px; gap: 8px; }
-    .brand { font-size: 15.5px; }
+    .brand { font-size: 16.5px; }
     .btn-nav { padding: 10px 13px; }
   }
 </style>
@@ -870,7 +878,7 @@
   <div class="wrap foot">
 
     <div>
-      <p>MatchDelegate is gebouwd door <b>Tim Buyse</b>, afgevaardigde bij een Oost-Vlaamse
+      <p><span class="merk">MatchDelegate</span> is gebouwd door <b>Tim Buyse</b>, afgevaardigde bij een Oost-Vlaamse
       jeugdploeg, omdat hij het zelf elke zaterdag nodig had.</p>
       <p><a href="mailto:info@matchdelegate.be">info@matchdelegate.be</a> ·
       <a href="https://timbuyse.github.io/MatchDelegate/">Naar de app</a></p>
