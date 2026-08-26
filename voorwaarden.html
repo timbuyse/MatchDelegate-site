@@ -30,7 +30,13 @@
 
   nav { background: var(--blk); position: sticky; top: 0; z-index: 50; }
   nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 74px; gap: 16px; }
-  .brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 800; font-size: 17px; }
+  /* Dezelfde merkbehandeling als op de startpagina: de M en de D vol, de rest in klein kapitaal.
+     In de balk mag de naam ruim staan; midden in een zin moet hij rustig blijven, vandaar twee
+     verschillende letterruimtes. Klein kapitaal leest kleiner dan gewone letters, daarom een halve
+     punt groter in de balk. */
+  .brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 800; font-size: 17.5px;
+           font-variant: small-caps; letter-spacing: 1px; }
+  .merk { font-variant: small-caps; letter-spacing: .3px; }
   .brand img { width: 30px; height: 30px; object-fit: contain; }
   .btn-nav { display: inline-block; padding: 9px 16px; border-radius: 10px; font-size: 14px; font-weight: 700; text-decoration: none; }
   .btn-blue { background: var(--blu); color: #fff; }
@@ -43,6 +49,12 @@
   @media (max-width: 640px) { .doc { padding: 26px 20px; border-radius: 12px; } }
 
   .doc h1 { font-size: 30px; line-height: 1.2; letter-spacing: -.02em; }
+  /* "Gebruiksvoorwaarden" is een woord van negentien letters dat niet kan afbreken. Op 30px heeft het
+     300px nodig, en dat is meer dan een telefoon smaller dan 388px overhoudt tussen de marges - de
+     hele pagina schoof dan zijwaarts mee. Onder 400px dus wat kleiner: op de smalste telefoon van
+     320px houdt het woord er zo een tiental pixels over (nagemeten op de tekst zelf, niet op het
+     kader eromheen - dat laatste zegt enkel of iets past, niet hoeveel ruimte er rest). */
+  @media (max-width: 400px) { .doc h1 { font-size: 22px; } }
   .doc .datum { color: var(--txt2); font-size: 14px; margin-top: 6px; }
   .doc h2 { font-size: 18px; margin: 32px 0 10px; letter-spacing: -.01em; }
   .doc h2:first-of-type { margin-top: 26px; }
@@ -61,6 +73,9 @@
   footer a { color: #fff; }
   footer .fine { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.15);
                  font-size: 13px; color: #94a3b8; }
+  /* Een verwijzing in de kleine lettertjes hoort kleine lettertjes te blijven: wit zou daar harder
+     roepen dan de regel eromheen. */
+  footer .fine a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 </style>
 </head>
 <body>
@@ -85,13 +100,13 @@
     <p class="datum">Versie 1.1 · 27 augustus 2026</p>
 
     <h2>1. Wie wij zijn</h2>
-    <p>MatchDelegate is een webapp om wedstrijden van jeugdploegen voor te bereiden en op te volgen.
+    <p><span class="merk">MatchDelegate</span> is een webapp om wedstrijden van jeugdploegen voor te bereiden en op te volgen.
     Ze wordt aangeboden door <b>Tim Buyse</b>, hieronder “de aanbieder”. Het postadres wordt op
     eenvoudig verzoek meegedeeld en staat in de verwerkersovereenkomst die een club ondertekent.</p>
     <p>Contact: <a href="mailto:info@matchdelegate.be">info@matchdelegate.be</a></p>
 
     <h2>2. Wat de app doet</h2>
-    <p>Met MatchDelegate stelt een ploeg haar wedstrijden samen: de selectie, de opstelling per blok,
+    <p>Met <span class="merk">MatchDelegate</span> stelt een ploeg haar wedstrijden samen: de selectie, de opstelling per blok,
     de geplande wissels, en tijdens de wedstrijd de stand, de doelpunten, de kaarten en de
     speelminuten. Achteraf levert ze een verslag, een PDF en cijfers over het seizoen.</p>
     <p>De app is een <b>hulpmiddel</b>. Ze vervangt geen officiële wedstrijdbladen en heeft geen
@@ -210,7 +225,7 @@
     <p><a href="mailto:info@matchdelegate.be">info@matchdelegate.be</a> ·
     <a href="index.html">Startpagina</a> ·
     <a href="https://timbuyse.github.io/MatchDelegate/">Naar de app</a></p>
-    <p class="fine">© 2026 Tim Buyse · matchdelegate.be</p>
+    <p class="fine">© 2026 Tim Buyse · <a class="merk" href="/">MatchDelegate.be</a></p>
   </div>
 </footer>
 
