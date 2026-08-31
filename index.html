@@ -284,6 +284,8 @@
   .feat .beeld { order: 2; }
   .feat:nth-child(even) .txt { order: 2; }
   .feat:nth-child(even) .beeld { order: 1; }
+  .feat.solo { grid-template-columns: 1fr; }
+  .feat.solo .txt { max-width: 68ch; }
   .feat img {
     width: 100%; height: auto; display: block;
     border-radius: 14px;
@@ -494,7 +496,7 @@
           <a class="btn btn-green" href="#contact">Eerste clubs gezocht</a>
           <a class="btn btn-outline" href="voorbeeld/voorbeeld-wedstrijdverslag.pdf" target="_blank" rel="noopener">Bekijk een voorbeeldverslag</a>
         </div>
-        <p class="proof"><span>Loopt vandaag bij <b>twee jeugdploegen</b> van een Oost-Vlaamse club.</span></p>
+        <p class="proof"><span>Loopt vandaag bij <b>zes jeugdploegen</b> van een Oost-Vlaamse club.</span></p>
       </div>
     </div>
 
@@ -638,9 +640,33 @@
         </div>
       </div>
 
-      <div class="feat rv">
+      <div class="feat solo rv" id="afronden">
         <div class="txt">
           <div class="stap">8</div>
+          <h3>De wedstrijd die niemand volgde</h3>
+          <p><b>Niet elke wedstrijd wordt aan de zijlijn opgevolgd.</b> Een B-ploeg op een ander veld,
+          een afgevaardigde die verstek liet gaan: dan staat er 's avonds een wedstrijd zonder iets
+          erin. Onder <b>Afronden</b> staan er twee wegen naast elkaar — de uitslag zelf ingeven, of
+          ze ophalen.</p>
+          <p><b>Ophalen doet u met de link van de wedstrijdpagina.</b> U plakt het adres van de
+          openbare wedstrijdpagina, en de app leest eruit wat erop staat: de <b>selectie, de uitslag
+          met de doelpuntenmakers, de gele en rode kaarten, de scheidsrechter, het terrein, de trainer
+          en de afgevaardigde</b>. U ziet eerst wat ze ervan begrepen heeft en beslist <b>per stuk</b>
+          wat u overneemt.</p>
+          <p>Wat u zelf al had ingevuld, wordt niet stilzwijgend overschreven, en er wordt nooit een
+          speler weggehaald — wie erbij komt, komt op de bank. Uw opstelling, uw planning en uw
+          kapitein blijven staan.</p>
+          <p class="muted" style="font-size:15px">Geen koppeling en geen samenwerking met de
+          voetbalbond: de app leest een pagina die voor iedereen open staat, en meldt zich nergens
+          aan. Het werkt vanaf de <b>bovenbouw</b>, waar de bond een officieel wedstrijdblad
+          bijhoudt, en pas zodra dat blad verwerkt is. Lukt het niet, dan verandert er niets en vult
+          u in met de hand, zoals altijd.</p>
+        </div>
+      </div>
+
+      <div class="feat rv">
+        <div class="txt">
+          <div class="stap">9</div>
           <h3>De cijfers van één speler, over de jaren</h3>
           <p>Het scherm dat u opent vóór een gesprek met ouders: wedstrijden, doelpunten, speeltijd,
           het gemiddelde per match en hoe vaak hij in de selectie zat — met de wedstrijden eronder en
@@ -813,11 +839,17 @@
         met of zonder uitslag — bij een vriendschappelijke noteert soms niemand de score, en dan kan
         ze afgesloten worden op <b>– . –</b>: ze telt mee als gespeeld, maar levert geen winst,
         verlies of doelpunten op.</p>
-        <p>Stond het <b>wedstrijdplan</b> klaar met een opstelling per blok, dan tellen die minuten
-        gewoon mee in de speeltijd en in de fair-play-cijfers. Bij de speler staat er dan bij dat het
-        volgens het plan is en niet volgens de klok. Stond er enkel een startopstelling, dan komen er
-        géén minuten bij: daaruit zou volgen dat de basis alles speelde en de bank niets, en dat is
-        een sterke bewering over een wedstrijd die niemand gevolgd heeft.</p></div>
+        <p><b>Wat u zelf ingeeft, telt mee: de selectie, de doelpunten en de assists.</b> Wat er niet
+        bij komt, zijn <b>speelminuten</b> — daar staat iedereen op nul. Niemand heeft de klok
+        gevolgd, dus wie hoe lang speelde valt niet te berekenen. Stond het wedstrijdplan klaar met
+        een opstelling per blok, dan verandert dat daar niets aan: een plan zegt wat de bedoeling
+        <i>was</i>, niet wat er gebeurd is, en eenmaal zulke minuten in een gemiddelde zitten, zijn
+        ze niet meer van gemeten minuten te onderscheiden. In het verslag en in de PDF staat er
+        daarom bij dat de wedstrijd niet live gevolgd is, en bij <b>minste speeltijd</b> telt ze niet
+        mee.</p>
+        <p>Speelt uw ploeg in de bovenbouw, dan hoeft u de uitslag zelfs niet met de hand in te
+        tikken — de app haalt hem van de openbare wedstrijdpagina. Zie
+        <a href="#afronden">de wedstrijd die niemand volgde</a> hierboven.</p></div>
       </details>
 
       <details class="vraag">
@@ -880,6 +912,22 @@
         zijn: opgeteld over al zijn ploegen — <i>heeft dit kind genoeg gevoetbald?</i> — en gesplitst
         per ploeg — <i>hoe is de speeltijd in mijn ploeg verdeeld?</i> Enkel per ploeg tonen zou hem
         in beide ploegen te weinig laten spelen.</p></div>
+      </details>
+
+      <details class="vraag">
+        <summary>Kan een speler van een andere ploeg van de club meespelen?</summary>
+        <div class="antw"><p>Ja, en hij blijft daarbij dezelfde speler. Springt er iemand van een
+        andere ploeg van uw club bij — op voorhand ingepland, of tijdens de wedstrijd vanaf het veld
+        ernaast — dan kiest u hem <b>zoals hij bij die ploeg bekendstaat</b>. Hij komt op de bank met
+        het merkje <b>gast</b>, en zijn optreden telt gewoon mee in zijn eigen cijfers: bij hem staat
+        erbij dat hij ook gastspeler was bij uw ploeg.</p>
+        <p>Dat scheelt meer dan het lijkt. Tikt u zijn naam als een nieuwe speler in, dan zijn dat
+        voor de app twee verschillende jongens, en blijft de ene helft van zijn seizoen bij de andere
+        helft weg.</p>
+        <p>Het gaat <b>enkel om de eigen club</b>: van de andere ploegen ziet u de kern — naam,
+        rugnummer, positie — en verder niets, geen wedstrijden en geen notities. Over de clubgrens
+        heen ziet u niets. Speelt er iemand van buiten de club mee, dan zet u hem erbij als losse
+        speler.</p></div>
       </details>
 
       <details class="vraag">
