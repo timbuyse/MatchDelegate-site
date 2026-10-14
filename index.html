@@ -143,32 +143,59 @@
      bezoeker naar een dood beeld kijken. Enkel met javascript (en zonder de wens voor minder
      beweging) komt het in beeld. */
   #splash { display: none; }
+  /* DE BAL STAAT IN DE CEL BOVEN HET MIDDEN, zoals in de app sinds v2.8.5. Dit was een kolom met de
+     bal, de balk en de naam samen gecentreerd, waardoor de bal ergens tussen twee cellen in uitkwam —
+     dat valt op sinds de achtergrond boven-onder symmetrisch is.
+     De achtergrond staat op `center`, dus het middelpunt van de foto valt op het middelpunt van het
+     scherm, en daar ligt een celmiddelpunt. EEN CEL HOGER IS GEEN VAST AANTAL PIXELS: `cover` schaalt
+     naar de hoogte op een staand scherm en naar de breedte op een breed scherm. Eén cel is 122,1
+     beeldpixels van de 1194x672, dus 18,17% van de hoogte óf 10,23% van de breedte — de grootste van
+     de twee, net zoals `cover` zelf kiest. */
+  /* `display: block` MOET HIER BLIJVEN STAAN: `#splash` hierboven staat op `display: none`, en dit is
+     de enige regel die het weer aanzet. Ze stond als `display: flex` in de oude indeling; bij het
+     overzetten naar de vaste plaatsing viel ze weg en bleef het opstartscherm onzichtbaar. */
   html.js #splash {
+    --splash-cel: max(10.23vw, 18.17vh);
+    display: block;
     position: fixed; inset: 0; z-index: 9999;
     background: url('img/background_logo.jpg') center/cover no-repeat;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
     pointer-events: none;
     transition: opacity .5s ease, visibility .5s ease;
   }
   #splash::before { content: ''; position: absolute; inset: 0; background: rgba(10, 18, 35, .55); }
   #splash.weg { opacity: 0; visibility: hidden; }
   #splash img {
-    width: 140px; height: 140px; object-fit: contain; position: relative;
+    position: absolute; left: 50%; top: calc(50% - var(--splash-cel));
+    transform: translate(-50%, -50%);   /* ook los van de animatie, voor het eerste beeldje */
+    width: 170px; height: 170px; object-fit: contain;
     opacity: 0; animation: splashLogo .6s ease forwards;
   }
+  /* De balk en de naam hangen onder de bal: 85 px is de halve hoogte van de bal, plus wat lucht.
+     DE BALK CENTREREN MET EEN MARGE, NIET MET `transform`: zijn animatie schrijft `transform`, en een
+     animatie vervangt die waarde volledig — een `translateX(-50%)` zou bij het eerste beeldje
+     verdwijnen en de balk naar rechts laten springen.
+     DE NAAM KRIJGT DE VOLLE BREEDTE (`left:0;right:0`): met enkel een linkerrand op de helft is er
+     maar een halve schermbreedte, en dan breekt "MANAGE · TRACK · SHARE" over twee regels. */
   #splash-bar {
-    width: 150px; height: 3px; background: var(--grn); border-radius: 2px; position: relative;
+    position: absolute; left: 50%; margin-left: -75px; top: calc(50% - var(--splash-cel) + 107px);
+    width: 150px; height: 3px; background: var(--grn); border-radius: 2px;
     transform: scaleX(0); transform-origin: center;
-    animation: splashBar 1s .4s cubic-bezier(.22, 1, .36, 1) forwards;
+    animation: splashBar .6s .15s cubic-bezier(.22, 1, .36, 1) forwards;
   }
   #splash-titles {
-    display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative;
-    opacity: 0; animation: splashFade .5s .7s ease forwards;
+    position: absolute; left: 0; right: 0; top: calc(50% - var(--splash-cel) + 128px);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    opacity: 0; animation: splashFade .35s .4s ease forwards;
   }
   #splash-title { color: #fff; font-size: 24px; font-weight: 800; letter-spacing: 2px; font-variant: small-caps; }
   #splash-name { color: rgba(255, 255, 255, .55); font-size: 12px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; }
 
-  @keyframes splashLogo { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  /* De centrering moet MEE in de keyframes: deze animatie schrijft `transform`, en zonder die
+     translate springt de bal bij het eerste beeldje naar rechtsonder. */
+  @keyframes splashLogo {
+    from { opacity: 0; transform: translate(-50%, -50%) translateY(24px); }
+    to   { opacity: 1; transform: translate(-50%, -50%); }
+  }
   @keyframes splashBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   @keyframes splashFade { from { opacity: 0; } to { opacity: 1; } }
 
@@ -497,7 +524,7 @@
           <a class="btn btn-green" href="#contact">Eerste clubs gezocht</a>
           <a class="btn btn-outline" href="voorbeeld/voorbeeld-wedstrijdverslag.pdf" target="_blank" rel="noopener">Bekijk een voorbeeldverslag</a>
         </div>
-        <p class="proof"><span>Loopt vandaag bij <b>zes jeugdploegen</b> van een Oost-Vlaamse club.</span></p>
+        <p class="proof"><span>Loopt vandaag bij <b>twaalf jeugdploegen</b> van een Oost-Vlaamse club.</span></p>
       </div>
     </div>
 
@@ -1032,15 +1059,16 @@
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') zet(false); });
   })();
 
-  // Het opstartscherm weghalen zodra de animatie uitgespeeld is (logo .6s, balk tot 1,4s, titel tot
-  // 1,2s — dus 1,9s en dan wegvloeien). Daarna uit het document, zodat er niets achterblijft.
+  // Het opstartscherm weghalen zodra de animatie uitgespeeld is. Sinds de app haar animatie inkortte
+  // (v2.8.4) is dat na 750 ms — logo .6s, balk tot .75s, titel tot .75s — en wachten we 900 ms, net
+  // als SPLASH_MIN_MS in de app. Daarna wegvloeien en uit het document, zodat er niets achterblijft.
   (function () {
     var s = document.getElementById('splash');
     if (!s || !document.documentElement.classList.contains('js')) { if (s) s.remove(); return; }
     setTimeout(function () {
       s.classList.add('weg');
       setTimeout(function () { if (s.parentNode) s.parentNode.removeChild(s); }, 600);
-    }, 1900);
+    }, 900);
   })();
 
   // Onderdelen laten verschijnen zodra ze in beeld komen. Wie bewegende beelden liever niet ziet,
