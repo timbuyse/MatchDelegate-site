@@ -165,7 +165,7 @@
   #splash::before { content: ''; position: absolute; inset: 0; background: rgba(10, 18, 35, .55); }
   #splash.weg { opacity: 0; visibility: hidden; }
   #splash img {
-    position: absolute; left: 50%; top: calc(50% - var(--splash-cel));
+    position: absolute; left: 50%; top: calc(50% - var(--splash-cel) / 2);
     transform: translate(-50%, -50%);   /* ook los van de animatie, voor het eerste beeldje */
     width: 170px; height: 170px; object-fit: contain;
     opacity: 0; animation: splashLogo .6s ease forwards;
@@ -177,13 +177,13 @@
      DE NAAM KRIJGT DE VOLLE BREEDTE (`left:0;right:0`): met enkel een linkerrand op de helft is er
      maar een halve schermbreedte, en dan breekt "MANAGE · TRACK · SHARE" over twee regels. */
   #splash-bar {
-    position: absolute; left: 50%; margin-left: -75px; top: calc(50% - var(--splash-cel) + 107px);
+    position: absolute; left: 50%; margin-left: -75px; top: calc(50% - var(--splash-cel) / 2 + 107px);
     width: 150px; height: 3px; background: var(--grn); border-radius: 2px;
     transform: scaleX(0); transform-origin: center;
     animation: splashBar .6s .15s cubic-bezier(.22, 1, .36, 1) forwards;
   }
   #splash-titles {
-    position: absolute; left: 0; right: 0; top: calc(50% - var(--splash-cel) + 128px);
+    position: absolute; left: 0; right: 0; top: calc(50% - var(--splash-cel) / 2 + 128px);
     display: flex; flex-direction: column; align-items: center; gap: 6px;
     opacity: 0; animation: splashFade .35s .4s ease forwards;
   }
